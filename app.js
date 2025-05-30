@@ -4,12 +4,13 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const path = require("path");
+
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
 
-const SECRET_KEY = "your_jwt_secret";
+const SECRET_KEY = "fwgfwftwewihhegckwefcku";
 const users = {}; // { username: { password, balance, transactions } }
 
 // Middleware for Auth
@@ -19,7 +20,7 @@ function authenticateToken(req, res, next) {
     jwt.verify(token, SECRET_KEY, (err, user) => {
         if (err) return res.sendStatus(403);
         req.user = user;
-        next();
+        next();     
     });
 }
 

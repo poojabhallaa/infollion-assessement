@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wallet</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Wallet Dashboard</h2>
+
+    <input id="amount" placeholder="Amount" type="number" />
+    <button onclick="deposit()">Deposit</button>
+    <button onclick="withdraw()">Withdraw</button>
+
+    <h3 style="margin-top: 20px;">Transfer</h3>
+    <input id="to" placeholder="To Username" />
+    <input id="transfer-amount" placeholder="Amount" type="number" />
+    <button onclick="transfer()">Transfer</button>
+
+    <h3 style="margin-top: 20px;">Transaction History</h3>
+    <button onclick="getHistory()">Get History</button>
+    <pre id="history"></pre>
+
+    <button style="background: crimson;" onclick="logout()">Logout</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

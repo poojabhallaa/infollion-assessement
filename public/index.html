@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Digital Wallet</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Register</h2>
+    <input id="reg-username" placeholder="Username">
+    <input id="reg-password" placeholder="Password" type="password">
+    <button onclick="register()">Register</button>
+
+    <h2>Login</h2>
+    <input id="login-username" placeholder="Username">
+    <input id="login-password" placeholder="Password" type="password">
+    <button onclick="login()">Login</button>
+
+    <div id="wallet-section" class="hidden">
+      <h2>Wallet Operations</h2>
+      <input id="amount" placeholder="Amount">
+      <button onclick="deposit()">Deposit</button>
+      <button onclick="withdraw()">Withdraw</button>
+
+      <h3>Transfer</h3>
+      <input id="to" placeholder="To Username">
+      <input id="transfer-amount" placeholder="Amount">
+      <button onclick="transfer()">Transfer</button>
+
+      <h3>Transaction History</h3>
+      <button onclick="getHistory()">Get History</button>
+      <pre id="history"></pre>
+    </div>
+  </div>
+
+  <script>
+    let token = "";
+
+    async function register() {
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('reg-username').value,
+          password: document.getElementById('reg-password').value
+        })
+      });
+      alert((await res.json()).message || 'Registered');
+    }
+
+    async function login() {
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('login-username').value,
+          password: document.getElementById('login-password').value
+        })
+      });
+      const data = await res.json();
+      token = data.token;
+      if (token) document.getElementById('wallet-section').classList.remove('hidden');
+    }
+
+    async function deposit() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const res = await fetch('/wallet/deposit', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ amount })
+      });
+      alert(JSON.stringify(await res.json()));
+    }
+
+    async function withdraw() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const res = await fetch('/wallet/withdraw', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ amount })
+      });
+      alert(JSON.stringify(await res.json()));
+    }
+
+    async function transfer() {
+      const amount = parseFloat(document.getElementById('transfer-amount').value);
+      const to = document.getElementById('to').value;
+      const res = await fetch('/wallet/transfer', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ amount, to })
+      });
+      alert(JSON.stringify(await res.json()));
+    }
+
+    async function getHistory() {
+      const res = await fetch('/wallet/history', {
+        headers: authHeaders()
+      });
+      const data = await res.json();
+      document.getElementById('history').innerText = JSON.stringify(data.transactions, null, 2);
+    }
+
+    function authHeaders() {
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      };
+    }
+  </script>
+</body>
+</html>

@@ -82,9 +82,49 @@ async function register() {
   const data = await res.json();
   if (res.ok) {
     alert(data.message || 'Registered!');
-    window.location.href = 'wallet.html';
+
+    // Auto-login after registration
+    const loginRes = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const loginData = await loginRes.json();
+    if (loginData.token) {
+      localStorage.setItem("token", loginData.token);
+      window.location.href = 'wallet.html';
+    } else {
+      alert('Auto-login failed. Please login manually.');
+      window.location.href = 'login.html';
+    }
+
   } else {
     alert(data.error || 'Registration failed');
   }
+}
+
+
+async function getFlagged() {
+  const res = await fetch('/admin/flagged', { headers: authHeaders() });
+  const data = await res.json();
+  document.getElementById('results').innerText = JSON.stringify(data, null, 2);
+}
+
+async function getBalances() {
+  const res = await fetch('/admin/balances', { headers: authHeaders() });
+  const data = await res.json();
+  document.getElementById('results').innerText = JSON.stringify(data, null, 2);
+}
+
+async function getTopUsers() {
+  const res = await fetch('/admin/top-users', { headers: authHeaders() });
+  const data = await res.json();
+  document.getElementById('results').innerText = JSON.stringify(data, null, 2);
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
 }
 

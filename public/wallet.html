@@ -7,19 +7,42 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="logo">Logo</div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#" class="nav-login-btn">Profile</a>
+  </nav>
+
+  <!-- Wallet Modal -->
+  <div class="container wallet-container">
     <h2>Wallet Dashboard</h2>
 
-    <input id="amount" placeholder="Amount" type="number" />
+    <div class="input-group">
+      <span class="icon">💰</span>
+      <input id="amount" placeholder="Amount" type="number" />
+    </div>
+    
     <button onclick="deposit()">Deposit</button>
     <button onclick="withdraw()">Withdraw</button>
 
-    <h3 style="margin-top: 20px;">Transfer</h3>
-    <input id="to" placeholder="To Username" />
-    <input id="transfer-amount" placeholder="Amount" type="number" />
+    <h3>Transfer</h3>
+    <div class="input-group">
+      <span class="icon">👤</span>
+      <input id="to" placeholder="To Username" />
+    </div>
+    <div class="input-group">
+      <span class="icon">💰</span>
+      <input id="transfer-amount" placeholder="Amount" type="number" />
+    </div>
     <button onclick="transfer()">Transfer</button>
 
-    <h3 style="margin-top: 20px;">Transaction History</h3>
+    <h3>Transaction History</h3>
     <button onclick="getHistory()">Get History</button>
     <pre id="history"></pre>
 
